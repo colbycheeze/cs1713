@@ -1,0 +1,30 @@
+petem@xyz.net Pete Moss
+123 Boggy Lane,New Orleans,LA,70112
+SBB001 10
+SBG002 50
+MCW001 2
+SBG002 10
+000000 0
+pcorn@abc.net Pop Corn
+456 Kernel,San Antonio,TX,78210
+BOM001 2
+NHC001 ABC50
+SBG002 100
+MCW001 50
+XXX001 20
+SBG002 100
+000000 0
+pennyl@xyz.net Penny Loafer
+789 Walking St,Philadelphia,PA,19102
+MCW001 10
+NHC001 200
+000000 0
+hgilmore@xyz.net Adam Sandler
+444 Golf View,Hollywood,CA,92274
+SBB001 20
+000000 0
+butter@xyz.net Melba Toast
+222 Cracker Blvd,San Antonio,TX,78222 
+PPF001 10
+SBG002 150
+000000 0
