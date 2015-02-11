@@ -92,8 +92,17 @@ int main(int argc, char *argv[])
     return rc;
 }
 
-/****** you need to document and code this function *****/
 
+/******************** processOrders *****************************
+int processOrders()
+Purpose:
+    Prints order in a readable format. Checks for errors.
+Notes:
+    If an error occurs the program will exit and an appropriate error message 
+    will be returned.
+Returns:
+    returns 0 if code passes.
+**************************************************************************/
 int processOrders()
 {
     char szInputBuffer[100];
@@ -111,7 +120,7 @@ int processOrders()
                 , customer.szFullName);
 
         //check for errors
-        if(iscanfCnt <2) exitError(ERR_CUSTOMER_ADDRESS_DATA, szInputBuffer);
+        if(iscanfCnt < 2) exitError(ERR_CUSTOMER_ADDRESS_DATA, szInputBuffer);
 
         printf("%-15s %15s\n"
                 , customer.szEmailAddr
@@ -126,7 +135,7 @@ int processOrders()
                 , customer.szZipCd);
 
         //check for errors
-        if(iscanfCnt <2) exitError(ERR_CUSTOMER_ADDRESS_DATA, szInputBuffer);
+        if(iscanfCnt <4) exitError(ERR_CUSTOMER_ADDRESS_DATA, szInputBuffer);
 
         printf("%s\n%s, %s %s\n"
                 , customer.szStreetAddress
@@ -152,8 +161,10 @@ int processOrders()
             printf("%10s %20d\n"
                     , item.szStockNumber
                     , item.iRequestQty);
+
         }
     }
+    return 0;
 }
 
 /******************** processCommandSwitches *****************************
