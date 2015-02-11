@@ -99,26 +99,35 @@ int processOrders()
     char szInputBuffer[100];
     Customer customer;
     PurchaseItem item;
+    int iscanfCnt;
 
     //Read in the lines
     while (fgets(szInputBuffer, 100, pfileOrder) != NULL)
     {
         printf("************** Order ********************\n");
         //Grab name/email
-        sscanf(szInputBuffer, "%s %[^\n]\n"
+        iscanfCnt = sscanf(szInputBuffer, "%s %[^\n]\n"
                 , customer.szEmailAddr
                 , customer.szFullName);
+
+        //check for errors
+        if(iscanfCnt <2) exitError(ERR_CUSTOMER_ADDRESS_DATA, szInputBuffer);
+
         printf("%-15s %15s\n"
                 , customer.szEmailAddr
                 , customer.szFullName);
 
         //Grab address
         fgets(szInputBuffer, 100, pfileOrder);
-        sscanf(szInputBuffer, "%[^,],%[^,],%[^,],%s\n"
+        iscanfCnt = sscanf(szInputBuffer, "%[^,],%[^,],%[^,],%s\n"
                 , customer.szStreetAddress
                 , customer.szCity
                 , customer.szStateCd
                 , customer.szZipCd);
+
+        //check for errors
+        if(iscanfCnt <2) exitError(ERR_CUSTOMER_ADDRESS_DATA, szInputBuffer);
+
         printf("%s\n%s, %s %s\n"
                 , customer.szStreetAddress
                 , customer.szCity
@@ -131,17 +140,12 @@ int processOrders()
                 , "Quantity");
         while (fgets(szInputBuffer, 100, pfileOrder) != NULL)
         {
-            sscanf(szInputBuffer, "%s %d"
+            iscanfCnt = sscanf(szInputBuffer, "%s %d"
                     , item.szStockNumber
                     , &item.iRequestQty);
 
             //check for errors
-            //if qty is not a number, return error
-            if(isdigit(item.iRequestQty) > 0)
-            //if(isdigit(10) > 0)
-            {
-                exitError(ERR_PURCHASE_ITEM_DATA, szInputBuffer);
-            }
+            if(iscanfCnt <2) exitError(ERR_PURCHASE_ITEM_DATA, szInputBuffer);
 
             //if end of items reached, stop looping through items
             if(strncmp(item.szStockNumber, "000000", 6) == 0) break;
@@ -151,7 +155,6 @@ int processOrders()
         }
     }
 }
-
 
 /******************** processCommandSwitches *****************************
 void processCommandSwitches(int argc, char *argv[], char **ppszOrderFileName)
