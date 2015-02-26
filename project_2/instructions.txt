@@ -1,0 +1,4 @@
+to compile:
+gcc -g -o file_name c_file.c
+
+

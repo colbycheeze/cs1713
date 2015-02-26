@@ -63,28 +63,39 @@ Notes:
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "cs1713p1.h"
+#include "cs1713p2.h"
 FILE *pfileOrder;                   // stream Input for Customer Order data
+FILE *pfileInventory;
 
-void processCommandSwitches(int argc, char *argv[], char **ppszOrderFileName);
+void processCommandSwitches(int argc, char *argv[], char **ppszOrderFileName, char **ppszInventoryFileName);
 int processOrders();
+int *pOrdersArray;
 
 int main(int argc, char *argv[])
 {
     char            *pszOrderFileName = NULL;
+    char            *pszInventoryFileName = NULL;
     int             rc;
  
     // Process the command switches
-    processCommandSwitches(argc, argv,  &pszOrderFileName);
+    processCommandSwitches(argc, argv,  &pszOrderFileName, &pszInventoryFileName);
     
     // open the Customer Order stream data file
     if (pszOrderFileName == NULL)
         exitError(ERR_MISSING_SWITCH, "-c");
     
+    // open the Inventory File stream data file
+    if (pszInventoryFileName == NULL)
+        exitError(ERR_MISSING_SWITCH, "-i");
+   
     pfileOrder = fopen(pszOrderFileName, "r");
     if (pfileOrder == NULL)
         exitError(ERR_CUSTOMER_ORDER_FILENAME, pszOrderFileName);
    
+    pfileInventory = fopen(pszInventoryFileName, "r");
+    if (pfileInventory == NULL)
+        exitError(ERR_INVENTORY_FILENAME, pszInventoryFileName);
+    
     // process the orders
     rc = processOrders();
 
@@ -92,7 +103,22 @@ int main(int argc, char *argv[])
     return rc;
 }
 
+int * readInventoryFile() {
+    //do some reading
+    //Stock stockM
+    return pOrdersArray;
+}
 
+int countLines()
+{
+    int iLineCnt = 0;
+    char ch;
+
+    while ((ch = fgetc(pfileInventory)) != NULL)
+    {
+        if(ch == "\n") iLineCnt++;
+    }
+}
 /******************** processOrders *****************************
 int processOrders()
 Purpose:
@@ -103,6 +129,7 @@ Notes:
 Returns:
     returns 0 if code passes.
 **************************************************************************/
+
 int processOrders()
 {
     char szInputBuffer[100];
@@ -182,7 +209,7 @@ Notes:
     If a syntax error is encountered (e.g., unknown switch), the program
     prints a message to stderr and exits with ERR_COMMAND_LINE_SYNTAX.
 **************************************************************************/
-void processCommandSwitches(int argc, char *argv[], char **ppszOrderFileName)
+void processCommandSwitches(int argc, char *argv[], char **ppszOrderFileName, **ppszInventoryFileName)
 {
     int i;
     int rc = 0; 
@@ -201,6 +228,12 @@ void processCommandSwitches(int argc, char *argv[], char **ppszOrderFileName)
                     exitUsage(i, ERR_MISSING_ARGUMENT, argv[i - 1]);
                 else
                     *ppszOrderFileName = argv[i];
+                break;
+            case 'i':                   // Customer Order File Name
+                if (++i >= argc)
+                    exitUsage(i, ERR_MISSING_ARGUMENT, argv[i - 1]);
+                else
+                    *ppszInventoryFileName = argv[i];
                 break;
             case '?':
                 exitUsage(USAGE_ONLY, "", "");
